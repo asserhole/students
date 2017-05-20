@@ -5,7 +5,18 @@
 	<title>学生管理系统</title>
 	<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
 	<style>
-		
+		#progressbar .progress{
+			margin:0;
+		}
+		#progressbar .modal-content{
+			position: relative;
+		}
+		#progressbar #tips{
+			position: absolute;
+			left:50%;
+			top:50%;
+			transform:translate(-50%,-50%);
+		}
 	</style>
 </head>
 <body>
@@ -86,6 +97,18 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="modal" id="progressbar" data-backdrop="static">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="progress">
+					  <div id="barbar" class="progress-bar progress-bar-striped active" role="progressbar" style="width: 0">
+					  </div>
+					</div>
+					<p id="tips"></p>
+				</div>
+			</div>
+		</div>
 		
 	</div>
 
@@ -96,6 +119,34 @@
 	<script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 
 	<script>
+			$(function  () {
+				
+				$('#progressbar').on('shown.bs.modal', function (e) {  
+		            $(this).css('display', 'block');  
+		            var modalHeight=$(window).height() / 2 - $('#youModel .modal-dialog').height() / 2;  
+		            $(this).find('.modal-dialog').css({  
+		                'margin-top': modalHeight  
+		            });  
+		        }); 
+
+		        $('#progressbar').modal('show');
+		        
+		        
+		        	var barWidth = 0,
+		        		timer = null;
+
+		        	timer = setInterval(function  () {
+		        		barWidth++;
+		        		if(barWidth<=100){
+		        			$('#barbar').attr('style','width:'+barWidth+"%");
+		        			$('#tips').text('正在初始化 '+barWidth+"%");
+		        		}else{
+		        			clearInterval(timer);
+		        			$('#progressbar').modal('hide');
+		        		}
+					},50);
+				
+			})
 		var box = new Vue({
 			el: '#box',
 			data: {
